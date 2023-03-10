@@ -1,55 +1,93 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import * as api from '../../shared/API/contacts';
 
-import {
-  fetchContactsLoading,
-  fetchContactsSuccess,
-  fetchContactsError,
-  fetchAddContactLoading,
-  fetchAddContactSuccess,
-  fetchAddContactError,
-  fetchDeleteContactLoading,
-  fetchDeleteContactError,
-  fetchDeleteContactSuccess,
-} from './contacts-actions';
+// import {
+//   fetchContactsLoading,
+//   fetchContactsSuccess,
+//   fetchContactsError,
+//   fetchAddContactLoading,
+//   fetchAddContactSuccess,
+//   fetchAddContactError,
+//   fetchDeleteContactLoading,
+//   fetchDeleteContactError,
+//   fetchDeleteContactSuccess,
+// } from './contacts-actions';
 
-export const fetchContacts = () => {
-  const funk = async dispatch => {
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetch',
+  async (_, thunkAPI) => {
     try {
-      dispatch(fetchContactsLoading());
       const data = await api.getContacts();
-      dispatch(fetchContactsSuccess(data));
-      console.log(data);
+      return data;
     } catch ({ response }) {
-      dispatch(fetchContactsError(response.data.message));
+      return thunkAPI.rejectWithValue(response.data.message);
     }
-  };
-  return funk;
-};
+  }
+);
 
-export const fetchAddContact = data => {
-  const funk = async dispatch => {
+export const fetchAddContact = createAsyncThunk(
+  'contacts/add',
+  async (data, { rejectWithValue }) => {
     try {
-      dispatch(fetchAddContactLoading());
       const result = await api.addContact(data);
-      dispatch(fetchAddContactSuccess(result));
+      return result;
     } catch ({ response }) {
-      dispatch(fetchAddContactError(response.data.message));
+      return rejectWithValue(response.data.message);
     }
-  };
+  }
+);
 
-  return funk;
-};
-
-export const fetchDeleteContact = id => {
-  const funk = async dispatch => {
+export const fetchDeleteContact = createAsyncThunk(
+  'contacts/delete',
+  async (id, { rejectWithValue }) => {
     try {
-      dispatch(fetchDeleteContactLoading());
       await api.deleteContact(id);
-      dispatch(fetchDeleteContactSuccess(id));
+      return id;
     } catch ({ response }) {
-      dispatch(fetchDeleteContactError(response.data.message));
+      return rejectWithValue(response.data.message);
     }
-  };
+  }
+);
 
-  return funk;
-};
+// export const fetchContacts = () => {
+//   const funk = async dispatch => {
+//     try {
+//       dispatch(fetchContactsLoading());
+//       const data = await api.getContacts();
+//       dispatch(fetchContactsSuccess(data));
+//       console.log(data);
+//     } catch ({ response }) {
+//       dispatch(fetchContactsError(response.data.message));
+//     }
+//   };
+//   return funk;
+// };
+
+// export const fetchAddContact = data => {
+//   const funk = async dispatch => {
+//     try {
+//       dispatch(fetchAddContactLoading());
+//       const result = await api.addContact(data);
+//       dispatch(fetchAddContactSuccess(result));
+//     } catch ({ response }) {
+//       dispatch(fetchAddContactError(response.data.message));
+//     }
+//   };
+
+//   return funk;
+// };
+
+// export const fetchDeleteContact = id => {
+//   const funk = async dispatch => {
+//     try {
+//       dispatch(fetchDeleteContactLoading());
+//       await api.deleteContact(id);
+//       dispatch(fetchDeleteContactSuccess(id));
+//     } catch ({ response }) {
+//       dispatch(fetchDeleteContactError(response.data.message));
+//     }
+//   };
+
+//   return funk;
+// };

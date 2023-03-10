@@ -3,8 +3,6 @@ import { useEffect } from 'react';
 
 import { getFilteredContacts } from 'Redux/Contacts/contacts-selectors';
 
-// import { removeContact } from 'Redux/Contacts/contacts-slice';
-
 import {
   fetchContacts,
   fetchDeleteContact,
