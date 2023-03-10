@@ -2,8 +2,9 @@ import { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addContact } from 'Redux/Contacts/contacts-slice';
+// import { addContact } from 'Redux/Contacts/contacts-slice';
 import { getFilteredContacts } from 'Redux/Contacts/contacts-selectors';
+import { fetchAddContact } from 'Redux/Contacts/contacts-operations';
 
 import initialState from './initialState';
 
@@ -37,7 +38,7 @@ const MyContactForm = ({ onSubmit }) => {
       return alert(`${name} is already in contacts`);
     }
 
-    dispatch(addContact({ name, number }));
+    dispatch(fetchAddContact({ name, number }));
     setState({ ...initialState });
   };
 
