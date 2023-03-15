@@ -1,93 +1,40 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-import * as api from '../../shared/API/contacts';
-
-// import {
-//   fetchContactsLoading,
-//   fetchContactsSuccess,
-//   fetchContactsError,
-//   fetchAddContactLoading,
-//   fetchAddContactSuccess,
-//   fetchAddContactError,
-//   fetchDeleteContactLoading,
-//   fetchDeleteContactError,
-//   fetchDeleteContactSuccess,
-// } from './contacts-actions';
+axios.defaults.baseURL = 'https://640a284e6ecd4f9e18c68a47.mockapi.io';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetch',
   async (_, thunkAPI) => {
     try {
-      const data = await api.getContacts();
-      return data;
-    } catch ({ response }) {
-      return thunkAPI.rejectWithValue(response.data.message);
+      const response = await axios.get('/contacts');
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
 
-export const fetchAddContact = createAsyncThunk(
+export const addContact = createAsyncThunk(
   'contacts/add',
-  async (data, thunkAPI) => {
+  async (text, thunkAPI) => {
     try {
-      const result = await api.addContact(data);
-      return result;
-    } catch ({ response }) {
-      return thunkAPI.rejectWithValue(response.data.message);
+      const response = await axios.post('/contacts', text);
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
 
-export const fetchDeleteContact = createAsyncThunk(
+export const deleteContact = createAsyncThunk(
   'contacts/delete',
   async (id, thunkAPI) => {
     try {
-      await api.deleteContact(id);
-      return id;
-    } catch ({ response }) {
-      return thunkAPI.rejectWithValue(response.data.message);
+      const response = await axios.delete(`/contacts/${id}`);
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
-
-// export const fetchContacts = () => {
-//   const funk = async dispatch => {
-//     try {
-//       dispatch(fetchContactsLoading());
-//       const data = await api.getContacts();
-//       dispatch(fetchContactsSuccess(data));
-//       console.log(data);
-//     } catch ({ response }) {
-//       dispatch(fetchContactsError(response.data.message));
-//     }
-//   };
-//   return funk;
-// };
-
-// export const fetchAddContact = data => {
-//   const funk = async dispatch => {
-//     try {
-//       dispatch(fetchAddContactLoading());
-//       const result = await api.addContact(data);
-//       dispatch(fetchAddContactSuccess(result));
-//     } catch ({ response }) {
-//       dispatch(fetchAddContactError(response.data.message));
-//     }
-//   };
-
-//   return funk;
-// };
-
-// export const fetchDeleteContact = id => {
-//   const funk = async dispatch => {
-//     try {
-//       dispatch(fetchDeleteContactLoading());
-//       await api.deleteContact(id);
-//       dispatch(fetchDeleteContactSuccess(id));
-//     } catch ({ response }) {
-//       dispatch(fetchDeleteContactError(response.data.message));
-//     }
-//   };
-
-//   return funk;
-// };

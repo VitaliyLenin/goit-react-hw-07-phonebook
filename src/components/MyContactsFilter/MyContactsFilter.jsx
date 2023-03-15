@@ -6,11 +6,15 @@ import { setFilter } from 'Redux/Filter/filter-slice';
 import css from './MyContactsFilter.module.css';
 
 const MyContactsFilter = () => {
+  const onSetFilter = payload => {
+    dispatch(setFilter(payload));
+  };
+
   const filter = useSelector(getFilter);
   const dispatch = useDispatch();
 
   const handleFilter = e => {
-    dispatch(setFilter(e.currentTarget.value));
+    onSetFilter(e.target.value);
   };
 
   return (

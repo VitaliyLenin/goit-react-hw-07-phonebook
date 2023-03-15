@@ -1,30 +1,18 @@
 import { useState } from 'react';
+import { addContact } from 'Redux/Contacts/contacts-operations';
+import { getAllContacts } from 'Redux/Contacts/contacts-selectors';
 
 import { useSelector, useDispatch } from 'react-redux';
-
-// import { addContact } from 'Redux/Contacts/contacts-slice';
-// import { getFilteredContacts } from 'Redux/Contacts/contacts-selectors';
-import { fetchAddContact } from 'Redux/Contacts/contacts-operations';
-import { getAllContacts } from 'Redux/Contacts/contacts-selectors';
-// import { getFilteredContacts } from 'Redux/Filter/filter-selectors';
-
-import initialState from './initialState';
 
 import css from './MyContactForm.module.css';
 
 const MyContactForm = ({ onSubmit }) => {
-  const [state, setState] = useState({ ...initialState });
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
 
   const contacts = useSelector(getAllContacts);
 
   const dispatch = useDispatch();
-
-  const handleChange = ({ target }) => {
-    const { name, value } = target;
-    setState(prevState => {
-      return { ...prevState, [name]: value };
-    });
-  };
 
   const isDublicate = name => {
     const normalizedName = name.toLowerCase();
@@ -40,8 +28,10 @@ const MyContactForm = ({ onSubmit }) => {
       return alert(`${name} is already in contacts`);
     }
 
-    dispatch(fetchAddContact({ name, phone }));
-    setState({ ...initialState });
+    dispatch(addContact({ name, phone }));
+
+    setName('');
+    setPhone('');
   };
 
   const handleSubmit = e => {
@@ -49,15 +39,13 @@ const MyContactForm = ({ onSubmit }) => {
     onSubmit = handleAddContact({ name, phone });
   };
 
-  const { name, phone } = state;
-
   return (
     <div className={css.phonebook_wrapper}>
       <form className={css.phonebook_form} onSubmit={handleSubmit}>
         <label>Name</label>
         <input
           className={css.input}
-          onChange={handleChange}
+          onChange={event => setName(event.target.value)}
           type="text"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -70,7 +58,7 @@ const MyContactForm = ({ onSubmit }) => {
         <label>Number</label>
         <input
           className={css.input}
-          onChange={handleChange}
+          onChange={event => setPhone(event.target.value)}
           type="tel"
           name="phone"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
