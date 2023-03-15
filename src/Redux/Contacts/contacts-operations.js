@@ -28,24 +28,24 @@ export const fetchContacts = createAsyncThunk(
 
 export const fetchAddContact = createAsyncThunk(
   'contacts/add',
-  async (data, { rejectWithValue }) => {
+  async (data, thunkAPI) => {
     try {
       const result = await api.addContact(data);
       return result;
     } catch ({ response }) {
-      return rejectWithValue(response.data.message);
+      return thunkAPI.rejectWithValue(response.data.message);
     }
   }
 );
 
 export const fetchDeleteContact = createAsyncThunk(
   'contacts/delete',
-  async (id, { rejectWithValue }) => {
+  async (id, thunkAPI) => {
     try {
       await api.deleteContact(id);
       return id;
     } catch ({ response }) {
-      return rejectWithValue(response.data.message);
+      return thunkAPI.rejectWithValue(response.data.message);
     }
   }
 );

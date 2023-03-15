@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
-import { getFilteredContacts } from 'Redux/Contacts/contacts-selectors';
+import { getFilteredContacts } from 'Redux/Filter/filter-selectors';
+// import { getFilteredContacts } from 'Redux/Filter/filter-selectors';
 
 import {
   fetchContacts,
@@ -23,9 +24,9 @@ const MyContactList = () => {
     dispatch(fetchDeleteContact(id));
   };
 
-  const names = contacts.map(({ id, name, number }) => (
+  const names = contacts.map(({ id, name, phone }) => (
     <li key={id}>
-      {name} : {number}
+      {name} : {phone}
       <button
         className={css.button}
         onClick={() => handleRemoveContact(id)}

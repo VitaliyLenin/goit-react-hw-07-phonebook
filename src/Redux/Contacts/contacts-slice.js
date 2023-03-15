@@ -26,44 +26,44 @@ const initialState = {
   },
 };
 
-const contactSlice = createSlice({
+const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   extraReducers: builder => {
     builder
-      .addCase(fetchContacts.pending, store => {
-        store.isLoading = true;
+      .addCase(fetchContacts.pending, state => {
+        state.isLoading = true;
       })
-      .addCase(fetchContacts.fulfilled, (store, { payload }) => {
-        store.isLoading = false;
-        store.items = payload;
+      .addCase(fetchContacts.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.items = payload;
       })
-      .addCase(fetchContacts.rejected, (store, { payload }) => {
-        store.isLoading = false;
-        store.error = payload;
+      .addCase(fetchContacts.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
       })
-      .addCase(fetchAddContact.pending, store => {
-        store.isLoading = true;
+      .addCase(fetchAddContact.pending, state => {
+        state.isLoading = true;
       })
-      .addCase(fetchAddContact.fulfilled, (store, { payload }) => {
-        store.isLoading = false;
-        store.items.push(payload);
+      .addCase(fetchAddContact.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.items.push(payload);
       })
-      .addCase(fetchAddContact.rejected, (store, { payload }) => {
-        store.isLoading = false;
-        store.error = payload;
+      .addCase(fetchAddContact.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
       })
-      .addCase(fetchDeleteContact.pending, store => {
-        store.isLoading = true;
+      .addCase(fetchDeleteContact.pending, state => {
+        state.isLoading = true;
       })
-      .addCase(fetchDeleteContact.fulfilled, (store, { payload }) => {
-        store.isLoading = false;
-        const index = store.items.findIndex(item => item.id === payload);
-        store.items.splice(index, 1);
+      .addCase(fetchDeleteContact.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        const index = state.items.findIndex(item => item.id === payload);
+        state.items.splice(index, 1);
       })
-      .addCase(fetchDeleteContact.rejected, (store, { payload }) => {
-        store.isLoading = false;
-        store.error = payload;
+      .addCase(fetchDeleteContact.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
       });
   },
 });
@@ -117,4 +117,4 @@ const contactSlice = createSlice({
 //   },
 // });
 
-export default contactSlice.reducer;
+export default contactsSlice.reducer;

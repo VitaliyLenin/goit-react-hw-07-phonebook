@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // import { addContact } from 'Redux/Contacts/contacts-slice';
-import { getFilteredContacts } from 'Redux/Contacts/contacts-selectors';
+// import { getFilteredContacts } from 'Redux/Contacts/contacts-selectors';
 import { fetchAddContact } from 'Redux/Contacts/contacts-operations';
+import { getAllContacts } from 'Redux/Contacts/contacts-selectors';
+// import { getFilteredContacts } from 'Redux/Filter/filter-selectors';
 
 import initialState from './initialState';
 
@@ -13,7 +15,7 @@ import css from './MyContactForm.module.css';
 const MyContactForm = ({ onSubmit }) => {
   const [state, setState] = useState({ ...initialState });
 
-  const contacts = useSelector(getFilteredContacts);
+  const contacts = useSelector(getAllContacts);
 
   const dispatch = useDispatch();
 
@@ -33,21 +35,21 @@ const MyContactForm = ({ onSubmit }) => {
     return Boolean(result);
   };
 
-  const handleAddContact = ({ name, number }) => {
+  const handleAddContact = ({ name, phone }) => {
     if (isDublicate(name)) {
       return alert(`${name} is already in contacts`);
     }
 
-    dispatch(fetchAddContact({ name, number }));
+    dispatch(fetchAddContact({ name, phone }));
     setState({ ...initialState });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit = handleAddContact({ name, number });
+    onSubmit = handleAddContact({ name, phone });
   };
 
-  const { name, number } = state;
+  const { name, phone } = state;
 
   return (
     <div className={css.phonebook_wrapper}>
@@ -70,11 +72,11 @@ const MyContactForm = ({ onSubmit }) => {
           className={css.input}
           onChange={handleChange}
           type="tel"
-          name="number"
+          name="phone"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={number}
+          value={phone}
           placeholder="contact number"
         />
 

@@ -7,11 +7,10 @@ import css from './MyContactsFilter.module.css';
 
 const MyContactsFilter = () => {
   const filter = useSelector(getFilter);
-
   const dispatch = useDispatch();
 
-  const handleFilter = ({ target }) => {
-    dispatch(setFilter(target.value));
+  const handleFilter = e => {
+    dispatch(setFilter(e.currentTarget.value));
   };
 
   return (
